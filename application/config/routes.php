@@ -5,33 +5,22 @@ $route['default_controller'] = 'cities';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = TRUE;
 
-$route['canton']['get'] = 'canton/index';
-$route['canton/(:any)']['get'] = 'canton/find/$1';
+$route['pacientes']['get'] = 'pacientes/index';
+$route['pacientescontador']['get'] = 'pacientes/contador';
+$route['paciente']['post'] = 'pacientes/index';
+$route['pacientedelete/(:num)']['get'] = 'pacientes/delete/$1';
+$route['pacienteupdate']['post'] = 'pacientes/update';
 
-$route['productores']['get'] = 'productores/index';
-$route['productores/(:num)']['get'] = 'productores/find/$1';
-$route['productores']['post'] = 'productores/index';
-$route['productores/(:num)']['delete'] = 'productores/index/$1';
-$route['productores/(:any)']['put'] = 'productores/index/$1';
+$route['especialidadmedica']['get'] = 'especialidadmedica/index';
+$route['especialidadmedica-one/(:num)']['get'] = 'especialidadmedica/one/$1';
+$route['especialidadmedica']['post'] = 'especialidadmedica/index';
+$route['especialidadmedica-delete/(:num)']['get'] = 'especialidadmedica/delete/$1';
+$route['especialidadmedica-update']['post'] = 'especialidadmedica/update';
 
-$route['actividades']['get'] = 'actividades/index';
-$route['actividades/(:num)']['get'] = 'actividades/find/$1';
-$route['actividades']['post'] = 'actividades/index';
-$route['actividades/(:num)']['delete'] = 'actividades/index/$1';
+$route['provincias']['get'] = 'provincias/index';
+$route['cantones/(:num)']['get'] = 'provincias/cantones/$1';
 
-$route['contacto/(:num)']['get'] = 'contacto/find/$1';
-$route['contacto']['post'] = 'contacto/index';
-$route['contacto']['put'] = 'contacto/index';
-$route['contacto/(:num)']['delete'] = 'contacto/index/$1';
-
-$route['galeria/(:num)']['get'] = 'galeria/find/$1';
-$route['galeria']['post'] = 'galeria/index';
-$route['galeria/(:num)/(:any)']['delete'] = 'galeria/index/$1/$2';
-
-$route['login/(:any)/(:any)']['get'] = 'administrador/login/$1/$2';
-$route['admin/(:num)']['get'] = 'usuarios/find/$1';
-
-
+$route['generos']['get'] = 'generos/index';
 /*
 | -------------------------------------------------------------------------
 | Sample REST API Routes

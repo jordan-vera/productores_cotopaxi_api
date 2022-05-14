@@ -4,7 +4,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 require_once APPPATH . '/libraries/REST_Controller.php';
 
-class Administrador extends REST_Controller
+class Provincias extends REST_Controller
 {
     public function __construct($config = 'rest')
     {
@@ -13,39 +13,32 @@ class Administrador extends REST_Controller
         header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept, Access-Control-Request-Method");
         header("Access-Control-Allow-Methods: GET, POST, OPTIONS, PUT, DELETE");
         $method = $_SERVER['REQUEST_METHOD'];
-        if($method == "OPTIONS") {
+        if ($method == "OPTIONS") {
             die();
         }
 
-        $this->load->model('administrador_model');
+        $this->load->model('provincias_model');
     }
 
-    public function login_get($user, $clave)
+    public function index_get()
     {
-        $datos = $this->administrador_model->login($user, $clave);
-
-        if (!is_null($datos)) {
-            $this->response(array('response' => 'done', 'idadmin' => $datos['idadmin']), 200);
-        } else {
-            $this->response(array('error' => 'No hay usuarios en la base de datos...'), 200);
-        }
-    }
-
-    public function find_get($id)
-    {
-        if (!$id) {
-            $this->response(null, 400);
-        }
-        $datos = $this->administrador_model->get($id);
+        $datos = $this->provincias_model->get();
 
         if (!is_null($datos)) {
             $this->response(array('response' => $datos), 200);
         } else {
-            $this->response(array('error' => 'Usuario no encontrado...'), 200);
+            $this->response(array('error' => 'No hay datos...'), 200);
         }
     }
 
+    public function cantones_get($IDPROVINCIA)
+    {
+        $datos = $this->provincias_model->getcantones($IDPROVINCIA);
 
-
-
+        if (!is_null($datos)) {
+            $this->response(array('response' => $datos), 200);
+        } else {
+            $this->response(array('error' => 'No hay datos...'), 200);
+        }
+    }
 }

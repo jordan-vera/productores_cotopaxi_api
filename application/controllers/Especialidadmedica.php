@@ -4,7 +4,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 require_once APPPATH . '/libraries/REST_Controller.php';
 
-class Actividades extends REST_Controller
+class Especialidadmedica extends REST_Controller
 {
     public function __construct($config = 'rest')
     {
@@ -17,39 +17,38 @@ class Actividades extends REST_Controller
             die();
         }
 
-        $this->load->model('actividades_model');
+        $this->load->model('especialidadmedica_model');
     }
 
     public function index_get()
     {
-        $datos = $this->actividades_model->get();
+        $datos = $this->especialidadmedica_model->get();
 
         if (!is_null($datos)) {
             $this->response(array('response' => $datos), 200);
         } else {
-            $this->response(array('error' => 'No hay actividades en la base de datos...'), 200);
+            $this->response(array('error' => 'No hay datos...'), 200);
         }
     }
 
-    public function find_get($id)
+    public function one_get($IDESPECIALIDAD)
     {
-        if (!$id) {
-            $this->response(null, 400);
-        }
-        $datos = $this->actividades_model->get($id);
+        $datos = $this->especialidadmedica_model->getone($IDESPECIALIDAD);
 
         if (!is_null($datos)) {
             $this->response(array('response' => $datos), 200);
         } else {
-            $this->response(array('error' => 'actividades no encontrada...'), 200);
+            $this->response(array('error' => 'No hay datos...'), 200);
         }
     }
 
     public function index_post()
     {
-        $descripcion = $this->post('descripcion');
+        $params = json_decode(file_get_contents('php://input'));
 
-        $id = $this->actividades_model->save($descripcion);
+        $ESPECIALIDAD = $params->ESPECIALIDAD;
+
+        $id = $this->especialidadmedica_model->save($ESPECIALIDAD);
 
         if (!is_null($id)) {
             $this->response(array('response' => $id), 200);
@@ -58,16 +57,30 @@ class Actividades extends REST_Controller
         }
     }
 
-    public function index_delete($id)
+    public function delete_get($IDESPECIALIDAD)
     {
-        if (!$id) {
+        if (!$IDESPECIALIDAD) {
             $this->response(null, 400);
         }
-
-        $delete = $this->actividades_model->delete($id);
-
+        $delete = $this->especialidadmedica_model->delete($IDESPECIALIDAD);
         if (!is_null($delete)) {
             $this->response(array('response' => 'done'), 200);
+        } else {
+            $this->response(array('error', 'Algo se ha roto en el servidor...'), 400);
+        }
+    }
+
+    public function update_post()
+    {
+        $params = json_decode(file_get_contents('php://input'));
+
+        $IDESPECIALIDAD = $params->IDESPECIALIDAD;
+        $ESPECIALIDAD = $params->ESPECIALIDAD;
+
+        $update = $this->especialidadmedica_model->update($IDESPECIALIDAD, $ESPECIALIDAD);
+
+        if (!is_null($update)) {
+            $this->response(array('response' => 'data actualizado!'), 200);
         } else {
             $this->response(array('error', 'Algo se ha roto en el servidor...'), 400);
         }

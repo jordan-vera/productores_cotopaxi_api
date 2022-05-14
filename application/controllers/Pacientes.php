@@ -4,7 +4,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 require_once APPPATH . '/libraries/REST_Controller.php';
 
-class Contacto extends REST_Controller
+class Pacientes extends REST_Controller
 {
     public function __construct($config = 'rest')
     {
@@ -17,20 +17,28 @@ class Contacto extends REST_Controller
             die();
         }
 
-        $this->load->model('contacto_model');
+        $this->load->model('pacientes_model');
     }
 
-    public function find_get($id)
+    public function index_get()
     {
-        if (!$id) {
-            $this->response(null, 400);
-        }
-        $datos = $this->contacto_model->get($id);
+        $datos = $this->pacientes_model->get();
 
         if (!is_null($datos)) {
             $this->response(array('response' => $datos), 200);
         } else {
-            $this->response(array('error' => 'Tipo no encontrado...'), 404);
+            $this->response(array('error' => 'No hay productores en la base de datos...'), 200);
+        }
+    }
+
+    public function contador_get()
+    {
+        $datos = $this->pacientes_model->contador();
+
+        if (!is_null($datos)) {
+            $this->response(array('response' => $datos), 200);
+        } else {
+            $this->response(array('error' => 'productor no encontrado...'), 200);
         }
     }
 
@@ -38,11 +46,14 @@ class Contacto extends REST_Controller
     {
         $params = json_decode(file_get_contents('php://input'));
 
-        $telefono = $params->telefono;
+        $cedula = $params->cedula;
+        $nombres = $params->nombres;
+        $direccion = $params->direccion;
         $celular = $params->celular;
+        $telefono = $params->telefono;
         $email = $params->email;
 
-        $id = $this->contacto_model->save($telefono, $celular, $email);
+        $id = $this->pacientes_model->save($cedula, $nombres, $direccion, $celular, $telefono, $email);
 
         if (!is_null($id)) {
             $this->response(array('response' => $id), 200);
@@ -51,13 +62,13 @@ class Contacto extends REST_Controller
         }
     }
 
-    public function index_delete($id)
+    public function delete_get($id)
     {
         if (!$id) {
             $this->response(null, 400);
         }
 
-        $delete = $this->contacto_model->delete($id);
+        $delete = $this->pacientes_model->delete($id);
 
         if (!is_null($delete)) {
             $this->response(array('response' => 'done'), 200);
@@ -66,21 +77,23 @@ class Contacto extends REST_Controller
         }
     }
 
-    public function index_put()
+    public function update_post()
     {
-        $idcontacto = $this->post('idcontacto');
-        $telefono = $this->post('telefono');
-        $celular = $this->post('celular');
-        $email = $this->post('email');
+        $params = json_decode(file_get_contents('php://input'));
 
-        if (!$idcontacto) {
-            $this->response(null, 400);
-        }
+        $idpaciente = $params->idpaciente;
+        $cedula = $params->cedula;
+        $nombres = $params->nombres;
+        $direccion = $params->direccion;
+        $celular = $params->celular;
+        $telefono = $params->telefono;
+        $email = $params->email;
 
-        $update = $this->contacto_model->update($idcontacto, $telefono, $celular, $email);
+
+        $update = $this->pacientes_model->update($idpaciente, $cedula, $nombres, $direccion, $celular, $telefono, $email);
 
         if (!is_null($update)) {
-            $this->response(array('response' => 'tipo actualizado!'), 200);
+            $this->response(array('response' => 'data actualizado!'), 200);
         } else {
             $this->response(array('error', 'Algo se ha roto en el servidor...'), 400);
         }

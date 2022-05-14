@@ -10,7 +10,7 @@ $db['default'] = array(
 	'hostname' => 'localhost',
 	'username' => 'root',
 	'password' => '',
-	'database' => 'productores_cotopaxi',
+	'database' => 'patronato',
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',
 	'pconnect' => FALSE,
@@ -26,3 +26,9 @@ $db['default'] = array(
 	'failover' => array(),
 	'save_queries' => TRUE
 );
+
+/*
+'username' => 'u683785942_user',
+	'password' => 'Hermanosagricola25.',
+	'database' => 'u683785942_agricola',
+*/
